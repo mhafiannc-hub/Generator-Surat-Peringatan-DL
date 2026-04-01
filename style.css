@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+body { 
+    font-family: 'Inter', sans-serif; 
+}
+
+.print-area { 
+    width: 210mm; 
+    min-height: 297mm; 
+    padding: 20mm; 
+    margin: auto; 
+    background: white; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+}
+
+.tab-content { 
+    display: none; 
+}
+
+.tab-content.active { 
+    display: block; 
+}
+
+/* Optimasi hasil cetak PDF */
+@media print {
+    body { 
+        background: none; 
+        padding: 0;
+    }
+    .no-print { 
+        display: none; 
+    }
+    .print-area { 
+        box-shadow: none; 
+        margin: 0; 
+        width: 100%; 
+        padding: 10mm; 
+    }
+}

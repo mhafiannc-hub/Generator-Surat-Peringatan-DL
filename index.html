@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator SP - Dua Legenda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-black text-slate-900 mb-8 text-center lg:text-left no-print tracking-tight">
+            GENERATOR SURAT PERINGATAN DUA LEGENDA
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6 no-print">
+                
+                <div class="flex space-x-2 bg-slate-200 p-1 rounded-lg">
+                    <button onclick="switchTab('input')" id="btn-tab-input" class="flex-1 py-2 rounded-md font-bold transition bg-white text-slate-800 shadow-sm">Input Data</button>
+                    <button onclick="switchTab('settings')" id="btn-tab-settings" class="flex-1 py-2 rounded-md font-bold transition text-slate-600 hover:bg-slate-300">Pengaturan Template</button>
+                </div>
+
+                <div id="tab-input" class="tab-content active bg-white p-6 rounded-xl shadow-lg h-fit">
+                    <h2 class="text-xl font-bold mb-6 text-slate-800 border-b pb-2">Data Karyawan</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600">Nama Lengkap</label>
+                            <input type="text" id="inputNama" placeholder="Contoh: Budi Santoso" class="w-full p-2 border rounded mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600">Jabatan / Bagian</label>
+                            <input type="text" id="inputJabatan" placeholder="Contoh: Staff Gudang" class="w-full p-2 border rounded mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600">Jumlah Poin</label>
+                            <input type="number" id="inputPoin" placeholder="0" class="w-full p-2 border rounded mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-600">Penjabaran Poin</label>
+                            <textarea id="inputPenjabaran" rows="3" placeholder="Contoh: sering terlambat lebih dari 15 menit" class="w-full p-2 border rounded mt-1 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                        </div>
+                        
+                        <button onclick="generateSP()" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold hover:bg-slate-700 transition">
+                            Update Pratinjau
+                        </button>
+                        <button onclick="window.print()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-500 transition mt-2">
+                            Cetak Ke PDF
+                        </button>
+                        <p class="text-center text-[10px] text-slate-400 mt-6 uppercase tracking-widest italic font-medium">
+                            copyright dua legenda 2026
+                        </p>
+                    </div>
+                </div>
+
+                <div id="tab-settings" class="tab-content bg-white p-6 rounded-xl shadow-lg h-fit">
+                    <h2 class="text-xl font-bold mb-6 text-slate-800 border-b pb-2">Dashboard Template</h2>
+                    <div class="space-y-4 text-sm">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="p-3 bg-slate-50 rounded-lg border">
+                                <label class="font-bold text-slate-700 block mb-2">Sanksi SP-1 (&lt; 7 Poin)</label>
+                                <textarea id="setSanksi1" rows="2" class="w-full p-2 border rounded">Saudara tidak berhak mendapatkan bonus apapun dan tidak berhak mengajukan cuti.</textarea>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border">
+                                <label class="font-bold text-slate-700 block mb-2">Sanksi SP-2 (&gt;= 7 Poin)</label>
+                                <textarea id="setSanksi2" rows="2" class="w-full p-2 border rounded">Saudara tidak berhak mendapatkan bonus, tidak berhak mengajukan cuti, dan mendapatkan pemotongan gaji sebesar 10%.</textarea>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border">
+                                <label class="font-bold text-slate-700 block mb-2">Teks Masa Berlaku</label>
+                                <textarea id="setMasaBerlaku" rows="3" class="w-full p-2 border rounded">Surat peringatan ini akan dianggap hangus atau tidak berlaku lagi dalam jangka waktu 1 (satu) bulan kedepan, terhitung sejak surat ini dikeluarkan, dengan catatan karyawan yang bersangkutan dapat merubah sikap dan tidak mengulangi kesalahan yang sama.</textarea>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border">
+                                <label class="font-bold text-slate-700 block mb-2">Harapan Manajemen</label>
+                                <textarea id="setHarapan" rows="3" class="w-full p-2 border rounded">Demikian surat peringatan ini diberikan agar dapat diperhatikan dengan sebaik-baiknya. Manajemen berharap saudara dapat meningkatkan kedisiplinan jam kedatangan dan selalu patuh terhadap SOP yang berlaku demi kenyamanan bersama.</textarea>
+                            </div>
+                        </div>
+                        <button onclick="saveAndRefresh()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
+                            Simpan Perubahan Template
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-auto bg-slate-200 p-4 rounded-xl">
+                <div class="print-area" id="spContent">
+                    <div class="text-center font-bold text-xl mb-8 tracking-widest uppercase">Dua Legenda</div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="font-bold border-b-2 border-black inline-block text-lg" id="viewJudul">SURAT PERINGATAN</div>
+                        <div id="viewNomor">Nomor: SP-XXXXX/I/HRD-HQDL/04012026</div>
+                    </div>
+
+                    <div class="text-right mb-8">
+                        Malang, 1 April 2026
+                    </div>
+
+                    <div class="mb-6">
+                        <p class="mb-4">Surat ini dibuat sebagai upaya penegakan disiplin di lingkungan kerja Dua Legenda Grup. Adapun surat ini ditujukan kepada:</p>
+                        <table class="w-full text-sm sm:text-base">
+                            <tr>
+                                <td class="w-32 py-1">Nama</td>
+                                <td>: <span id="viewNama" class="font-semibold">......................</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-1">Bagian</td>
+                                <td>: <span id="viewJabatan" class="font-semibold">......................</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="mb-6 leading-relaxed text-justify">
+                        <p id="viewDeskripsi">
+                            Dengan kesalahan indispliner presensi hingga mencapai 0 poin tata tertib dengan (isi penjabaran kesalahan).
+                        </p>
+                    </div>
+
+                    <div class="mb-6 p-4 bg-slate-50 border-l-4 border-slate-800 italic text-justify">
+                        <div class="font-bold not-italic mb-1 underline">Sanksi:</div>
+                        <p id="viewSanksi">Silakan masukkan poin untuk melihat sanksi.</p>
+                    </div>
+
+                    <div class="mb-8 text-justify">
+                        <p id="viewMasaBerlaku">Surat peringatan ini akan dianggap hangus atau tidak berlaku lagi dalam jangka waktu 1 (satu) bulan kedepan, terhitung sejak surat ini dikeluarkan, dengan catatan karyawan yang bersangkutan dapat merubah sikap dan tidak mengulangi kesalahan yang sama.</p>
+                        <p class="mt-4 font-semibold" id="viewNextStep">
+                            Jika saudara mengulangi kembali kesalahan yang sama atau mencapai batas poin berikutnya, maka perusahaan akan mengeluarkan surat peringatan ke jenjang selanjutnya.
+                        </p>
+                    </div>
+
+                    <div class="mb-12 text-justify">
+                        <p id="viewHarapan">Demikian surat peringatan ini diberikan agar dapat diperhatikan dengan sebaik-baiknya. Manajemen berharap saudara dapat meningkatkan kedisiplinan jam kedatangan dan selalu patuh terhadap SOP yang berlaku demi kenyamanan bersama.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 text-center mt-20">
+                        <div>
+                            <p class="mb-20">Mengetahui,</p>
+                            <p class="font-bold underline">QC People Dua Legenda</p>
+                        </div>
+                        <div>
+                            <p class="mb-20">Diberikan Oleh,</p>
+                            <p class="font-bold underline">GA Dua Legenda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
