@@ -1,39 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
 
-body { 
-    font-family: 'Inter', sans-serif; 
+body { font-family: 'Inter', sans-serif; }
+
+:root {
+    --a4-width: 210mm;
+    --a4-height: 297mm;
+    --margin-standard: 25.4mm; /* 1 Inci standar */
+    --margin-left-special: 30mm; /* Sisi kiri lebih lebar untuk arsip */
 }
 
 .print-area { 
-    width: 210mm; 
-    min-height: 297mm; 
-    padding: 20mm; 
-    margin: auto; 
+    width: var(--a4-width); 
+    min-height: var(--a4-height); 
+    padding: var(--margin-standard) var(--margin-standard) var(--margin-standard) var(--margin-left-special); 
+    margin: 0 auto; 
     background: white; 
-    box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+    box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-.tab-content { 
-    display: none; 
+.preview-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: auto;
+    background-color: #cbd5e1;
+    padding: 40px 20px;
+    flex-grow: 1;
+    height: calc(100vh - 65px);
 }
 
-.tab-content.active { 
-    display: block; 
-}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-/* Optimasi hasil cetak PDF */
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
 @media print {
-    body { 
-        background: none; 
-        padding: 0;
+    @page { 
+        size: A4; 
+        margin: 0; 
     }
-    .no-print { 
-        display: none; 
+    body { 
+        background: none !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+    }
+    .no-print { display: none !important; }
+    .preview-wrapper { 
+        padding: 0 !important; 
+        background: none !important; 
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
     }
     .print-area { 
-        box-shadow: none; 
-        margin: 0; 
-        width: 100%; 
-        padding: 10mm; 
+        box-shadow: none !important; 
+        margin: 0 !important; 
+        width: var(--a4-width) !important;
+        height: var(--a4-height) !important;
+        padding: var(--margin-standard) var(--margin-standard) var(--margin-standard) var(--margin-left-special) !important;
+        page-break-after: always;
     }
 }
